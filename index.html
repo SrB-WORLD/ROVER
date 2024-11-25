@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {
+            position: relative;
+            width: 1000px;
+            margin: 0 auto;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 12px;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .up {
+            margin-bottom: auto;
+        }
+
+        .down, .left, .right, .stop {
+            margin-top: 10px;
+        }
+
+        .left, .right {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .stop {
+            background-color: red;
+        }
+
+        .stop:hover {
+            background-color: darkred;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #state {
+            font-size: 20px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        #tab-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .tab {
+            font-size: 20px;
+            color: #333;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="state">IDLE</div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <button class="btn up" onclick="forward()">▲</button>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            
+            <button class="btn left" onclick="sendCommand('left')">◄</button>
+            <button class="btn stop" onclick="sendCommand('idle')">■</button>
+            <button class="btn right" onclick="sendCommand('right')">►</button>
+        </div>
+        
+        <button class="btn down" onclick="sendCommand('backward')">▼</button>
+        <div style="display: flex;  justify-content: center; align-items: center; align-self: center;">
+            <div id="tab-container">
+                <button class="btn" onclick="fetchPolarity()">Fetch Polarity</button>
+                <div id="polarity"> </div>
+            </div>
+            <div id="tab-container">
+                <button class="btn" onclick="fetchIR()">IR</button>
+                <div id="IR"> </div>
+            </div>
+            <div id="tab-container">
+                <button class="btn" onclick="fetchRadio()">RADIO</button>
+                <div id="RADIO"> </div>
+            </div>
+            <div id="tab-container">
+                <button class="btn" onclick="fetchName()">NAME</button>
+                <div id="NAME"> </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+
+        function fetchPolarity() {
+            fetch('/fetchPolarity')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('polarity').innerText = `${data}`;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        function fetchIR() {
+            fetch('/fetchIR')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('IR').innerText = `${data}`;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        function fetchRadio() {
+            fetch('/fetchRadio')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('RADIO').innerText = `${data}`;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        function fetchName() {
+            fetch('/fetchName')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('NAME').innerText = `${data}`;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+
+        function forward() {
+            fetch('/forward')
+                .then(response => response.text())
+                .then(data => {
+                    console.log(`${data}`);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        
+    </script>
+</body>
+</html>
